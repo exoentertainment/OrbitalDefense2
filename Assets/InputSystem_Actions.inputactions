@@ -14,6 +14,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Secondary Action",
+                    "type": "Button",
+                    "id": "d877fd29-7f92-41b6-bc53-4ac7f380d7bd",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -36,6 +45,28 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Primary Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d6216f37-fb9a-454f-8379-f94099a55ae3",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Secondary Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3fd0d68-8016-49f3-b2be-4ebf6b495e76",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Secondary Action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

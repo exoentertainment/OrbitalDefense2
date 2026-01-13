@@ -1,16 +1,43 @@
+using System;
 using UnityEngine;
 
 public class ShipManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private GameObject selectedShip;
+
+    public static ShipManager instance;
+    
+    private void Awake()
     {
-        
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+    
+        instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    //Input manager calls this method and passes along the clicked on ship. Manager stores the passed object locally
+    public void SetSelectedShip(GameObject ship)
     {
+        if(selectedShip != ship && selectedShip != null)
+            selectedShip.GetComponent<ShipController>().ShipDeselected();
         
+        selectedShip = ship;
+        
+        //Send ship info to UI
+        //Turn on circular selected VFX around ship
+        selectedShip.GetComponent<ShipController>().ShipSelected();
+    }
+    
+    //Send movement coordinates to selected ship
+    public void SetMovePos(Vector3 movePos)
+    {
+        if (selectedShip != null)
+        {
+            //Send move coordinates to selected ship
+            selectedShip.GetComponent<ShipController>().SetTargetPos(movePos);
+        }
     }
 }

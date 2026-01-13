@@ -37,6 +37,9 @@ MonoBehaviour:
     assemblyNames:
     - AllIn13DShaderAssemebly
     - AllIn13DShaderDemoScriptsAssembly
+    - AllIn1VfxAssmebly
+    - AllIn1VfxDemoScriptAssemblies
+    - AllIn1VfxTexDemoAssembly
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
     - DamageNumbersPro
