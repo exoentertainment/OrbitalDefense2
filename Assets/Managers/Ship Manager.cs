@@ -37,7 +37,20 @@ public class ShipManager : MonoBehaviour
         if (selectedShip != null)
         {
             //Send move coordinates to selected ship
-            selectedShip.GetComponent<ShipController>().SetTargetPos(movePos);
+            selectedShip.GetComponent<ShipController>().SetDestinationPos(movePos);
         }
+    }
+    
+    public bool IsShipSelected()
+    {
+        if (selectedShip == null)
+            return false;
+        else
+            return true;
+    }
+
+    public void SetTarget(GameObject target)
+    {
+        selectedShip.GetComponent<ShipController>().SetTarget(target);
     }
 }

@@ -8,8 +8,13 @@ public class InputManager : MonoBehaviour
 {
     #region Serialized Fields
 
-    [SerializeField] LayerMask shipLayerMask;
+    [SerializeField] LayerMask leftMouseClickMask;
+    [SerializeField] private LayerMask rightMouseClickMask;
+    [SerializeField] LayerMask movementPlaneMask;
 
+    [SerializeField] private GameObject movementPlane;
+    
+    [SerializeField] GameObject targetEffect;
     #endregion
     
     //Left mouse click selects the ship at mouse cursor and sends to ship manager to store
@@ -20,7 +25,7 @@ public class InputManager : MonoBehaviour
             Ray screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             
             RaycastHit hitInfo;
-            if (Physics.Raycast(screenRay, out hitInfo, Mathf.Infinity, shipLayerMask))
+            if (Physics.Raycast(screenRay, out hitInfo, Mathf.Infinity, leftMouseClickMask))
             {
                 ShipManager.instance.SetSelectedShip(hitInfo.collider.gameObject);
             }
@@ -35,12 +40,24 @@ public class InputManager : MonoBehaviour
             Ray screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             
             RaycastHit hitInfo;
-            if (Physics.Raycast(screenRay, out hitInfo))
+            if (Physics.Raycast(screenRay, out hitInfo, Mathf.Infinity, rightMouseClickMask))
             {
-                if (hitInfo.collider.CompareTag("Movement Layer"))
+                if (hitInfo.collider.CompareTag("Movement Layer") && ShipManager.instance.IsShipSelected())
                 {
-                    hitInfo.collider.GetComponent<InteractionLayer>().Interact(hitInfo.point);
+                    movementPlane.GetComponent<InteractionLayer>().ActivateMovementEffect(hitInfo.point);
                     ShipManager.instance.SetMovePos(hitInfo.point);
+                }
+                else
+                {
+                    Ray movementPlaneRay = new Ray(hitInfo.collider.gameObject.transform.position, -hitInfo.collider.gameObject.transform.up);
+                    RaycastHit movementPlaneHit;
+
+                    if (Physics.Raycast(movementPlaneRay, out movementPlaneHit, Mathf.Infinity, movementPlaneMask) &&
+                        ShipManager.instance.IsShipSelected())
+                    {
+                        movementPlane.GetComponent<InteractionLayer>().ActivateTargetEffect(movementPlaneHit.point);
+                        ShipManager.instance.SetTarget(hitInfo.collider.gameObject);
+                    }
                 }
             }
         }

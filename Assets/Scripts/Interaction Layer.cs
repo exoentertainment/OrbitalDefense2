@@ -3,10 +3,26 @@ using UnityEngine;
 
 public class InteractionLayer : MonoBehaviour
 {
-    [SerializeField] MystifyEffect effect; 
+    #region Serialized Fields
+
+    [SerializeField] MystifyEffect mystifyEffect; 
+    [SerializeField] MystifyEffectProfile movementProfile;
+    [SerializeField] MystifyEffectProfile targetProfile;
+
+    #endregion
+
     
-    public void Interact(Vector3 hitPosition)
+    //Called by input manager. Changes the Mystify component preset and activates it
+    public void ActivateMovementEffect(Vector3 hitPosition)
     {
-        effect.HitFX(hitPosition);
+        mystifyEffect.profile = movementProfile;
+        mystifyEffect.HitFX(hitPosition);
+    }
+
+    //Called by input manager. Changes the Mystify component preset and activates it
+    public void ActivateTargetEffect(Vector3 hitPosition)
+    {
+        mystifyEffect.profile = targetProfile;
+        mystifyEffect.HitFX(hitPosition);
     }
 }

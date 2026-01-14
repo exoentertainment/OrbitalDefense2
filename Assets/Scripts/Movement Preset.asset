@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d75d2555fb91a47e0804fa3f9fe118f2, type: 3}
-  m_Name: New Mystify FX Profile
+  m_Name: Movement Preset
   m_EditorClassIdentifier: Assembly-CSharp::MystifyFX.MystifyEffectProfile
   owner: {fileID: 0}
   cullMode: 2
@@ -72,8 +72,8 @@ MonoBehaviour:
   noiseSize: 2
   noiseAmount: 0
   distortion: 0
-  distortionAmplitude: {x: 1, y: 1}
-  distortionFrequency: 10
+  distortionAmplitude: {x: 0, y: 0}
+  distortionFrequency: 3
   distortionAnimationSpeed: 1
   distortionFalloff: 5
   distortionRimPower: 0
@@ -194,7 +194,7 @@ MonoBehaviour:
   hexaGridSweepFrequency: 1.5
   hitIntensity: 1
   hitColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  hitRadius: 10
+  hitRadius: 5
   hitSpeed: 1
   hitNoiseScale: 1
   hitNoiseAmount: 0.25

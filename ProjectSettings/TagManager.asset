@@ -10,11 +10,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Movement Layer
   - Water
   - UI
   - Player Ship
-  - 
+  - Enemy Ship
   - 
   - 
   - 

@@ -1,54 +1,102 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ShipMovement : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed;
-    [SerializeField] float turnSpeed;
+    #region Serialized Fields
 
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] private BaseShipSO shipSO;
 
+    #endregion
+
+    private GameObject targetObject;
+    private Vector3 destinationPos;
     private Vector3 targetPos;
-    private bool isMoving;
+
+    private bool isMovingToDestination;
+    private bool isMovingToTarget;
 
     private void Update()
     {
-        CheckDistanceToTarget();
+        CheckDistanceToDestination();
         MoveShip();
         RotateShip();
     }
 
     void MoveShip()
     {
-        if (isMoving)
+        if (isMovingToDestination || isMovingToTarget)
         {
             //transform.Translate(transform.forward * (moveSpeed * Time.deltaTime));
-            transform.position += transform.forward * (moveSpeed * Time.deltaTime);
+            transform.position += transform.forward * (shipSO.moveSpeed * Time.deltaTime);
         }
     }
 
     void RotateShip()
     {
-        if (isMoving)
+        if (isMovingToDestination)
+        {
+            Vector3 targetVector = destinationPos - transform.position;
+            targetVector.Normalize();
+            Quaternion targetRotation = Quaternion.LookRotation(targetVector);
+
+            
+            transform.rotation = Quaternion.SlerpUnclamped(transform.rotation, targetRotation, shipSO.turnSpeed * Time.deltaTime);
+        }
+        else if (isMovingToTarget)
         {
             Vector3 targetVector = targetPos - transform.position;
             targetVector.Normalize();
             Quaternion targetRotation = Quaternion.LookRotation(targetVector);
 
             
-            transform.rotation = Quaternion.SlerpUnclamped(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.SlerpUnclamped(transform.rotation, targetRotation, shipSO.turnSpeed * Time.deltaTime);
         }
     }
     
-    public void SetTargetPos(Vector3 pos)
+    public void SetDestinationPos(Vector3 pos)
     {
-        targetPos = new Vector3(pos.x, pos.y + 10, pos.z);
-        isMoving = true;
+        destinationPos = new Vector3(pos.x, pos.y + 10, pos.z);
+        isMovingToDestination = true;
+        isMovingToTarget = false;
     }
 
-    void CheckDistanceToTarget()
+    void CheckDistanceToDestination()
     {
-        if(Vector3.Distance(transform.position, targetPos) <= 1)
-            isMoving = false;
+        if(isMovingToDestination)
+            if (Vector3.Distance(transform.position, destinationPos) <= 1)
+            {
+                isMovingToDestination = false;
+                return;
+            }
+
+        if(isMovingToTarget)
+            if (Vector3.Distance(transform.position, targetPos) <= 1)
+                SetNewTargetPos();
+    }
+    
+    //Receive target from ship controller, set new position around target
+    public void SetTarget(GameObject target)
+    {
+        isMovingToDestination = false;
+        isMovingToTarget = true;
+        
+        targetObject = target;
+
+        Vector3 randomSpot = (Random.insideUnitSphere * Random.Range(shipSO.minOrbitRadius, shipSO.maxOrbitRadius));
+        targetPos = randomSpot + target.transform.position;
+    }
+
+    void SetNewTargetPos()
+    {
+        Vector3 randomSpot = (Random.insideUnitSphere * Random.Range(shipSO.minOrbitRadius, shipSO.maxOrbitRadius));
+        targetPos = randomSpot + targetObject.transform.position;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, shipSO.minOrbitRadius);
     }
 }
