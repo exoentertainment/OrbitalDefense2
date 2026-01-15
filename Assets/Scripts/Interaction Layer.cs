@@ -8,9 +8,10 @@ public class InteractionLayer : MonoBehaviour
     [SerializeField] MystifyEffect mystifyEffect; 
     [SerializeField] MystifyEffectProfile movementProfile;
     [SerializeField] MystifyEffectProfile targetProfile;
-
+    
+    [SerializeField] int shipPositionOffset;
+    
     #endregion
-
     
     //Called by input manager. Changes the Mystify component preset and activates it
     public void ActivateMovementEffect(Vector3 hitPosition)
@@ -24,5 +25,10 @@ public class InteractionLayer : MonoBehaviour
     {
         mystifyEffect.profile = targetProfile;
         mystifyEffect.HitFX(hitPosition);
+    }
+
+    public int ReturnOffset()
+    {
+        return shipPositionOffset;
     }
 }

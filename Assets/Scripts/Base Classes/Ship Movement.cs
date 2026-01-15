@@ -10,12 +10,18 @@ public class ShipMovement : MonoBehaviour
 
     #endregion
 
+    private int movementLayerOffset;
     private GameObject targetObject;
     private Vector3 destinationPos;
     private Vector3 targetPos;
 
     private bool isMovingToDestination;
     private bool isMovingToTarget;
+
+    private void Start()
+    {
+        movementLayerOffset = GameObject.FindGameObjectWithTag("Movement Layer").GetComponent<InteractionLayer>().ReturnOffset();
+    }
 
     private void Update()
     {
@@ -24,11 +30,11 @@ public class ShipMovement : MonoBehaviour
         RotateShip();
     }
 
+    //If either a standard move or move to target is set
     void MoveShip()
     {
         if (isMovingToDestination || isMovingToTarget)
         {
-            //transform.Translate(transform.forward * (moveSpeed * Time.deltaTime));
             transform.position += transform.forward * (shipSO.moveSpeed * Time.deltaTime);
         }
     }
@@ -55,23 +61,25 @@ public class ShipMovement : MonoBehaviour
         }
     }
     
+    //Set the destination position for a move order
     public void SetDestinationPos(Vector3 pos)
     {
-        destinationPos = new Vector3(pos.x, pos.y + 10, pos.z);
+        destinationPos = new Vector3(pos.x, pos.y + movementLayerOffset, pos.z);
         isMovingToDestination = true;
         isMovingToTarget = false;
     }
 
     void CheckDistanceToDestination()
     {
-        if(isMovingToDestination)
+        if (isMovingToDestination)
+        {
             if (Vector3.Distance(transform.position, destinationPos) <= 1)
             {
                 isMovingToDestination = false;
                 return;
             }
-
-        if(isMovingToTarget)
+        }
+        else if(isMovingToTarget)
             if (Vector3.Distance(transform.position, targetPos) <= 1)
                 SetNewTargetPos();
     }
@@ -88,6 +96,7 @@ public class ShipMovement : MonoBehaviour
         targetPos = randomSpot + target.transform.position;
     }
 
+    //Assign a new random spot around the target
     void SetNewTargetPos()
     {
         Vector3 randomSpot = (Random.insideUnitSphere * Random.Range(shipSO.minOrbitRadius, shipSO.maxOrbitRadius));
