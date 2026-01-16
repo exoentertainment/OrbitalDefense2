@@ -8,23 +8,30 @@ public class CameraManager : MonoBehaviour
 
     [SerializeField] private CinemachineCamera defaultCamera;
     [SerializeField] private float panSpeed;
+    
+    [Header("Zoom Settings")]
+    [SerializeField] private float zoomSpeed;
+    [SerializeField] private float maxZoom;
 
     #endregion
 
     #region Variables
-
+    
     bool isPanningLeft;
     bool isPanningRight;
     bool isPanningUp;
     bool isPanningDown;
 
+    int scrollDirection;
+    private float currentZoom;
+    
     #endregion
 
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        currentZoom = 0;
     }
 
     private void Update()
@@ -53,38 +60,65 @@ public class CameraManager : MonoBehaviour
         {
             PanCameraDown();
         }
+        
+        if(scrollDirection != 0)
+            AdjustZoom();
     }
 
     #region Movement Methods
 
     void PanCameraLeft()
     {
-        Vector3 direction = defaultCamera.transform.right;
+        Vector3 direction = Vector3.left;
         direction.y = 0;
         direction.Normalize();
-        defaultCamera.transform.Translate(direction * (Time.unscaledDeltaTime * -panSpeed), Space.World);
+        defaultCamera.transform.Translate(direction * (Time.deltaTime * panSpeed), Space.World);
     }
     
     void PanCameraRight()
     {
-        Vector3 direction = defaultCamera.transform.right;
+        Vector3 direction = Vector3.right;
         direction.y = 0;
         direction.Normalize();
-        defaultCamera.transform.Translate(direction * (Time.unscaledDeltaTime * panSpeed), Space.World);
+        defaultCamera.transform.Translate(direction * (Time.deltaTime * panSpeed), Space.World);
     }
     
     void PanCameraDown()
     {
-        defaultCamera.transform.position += -defaultCamera.transform.forward * (Time.deltaTime * panSpeed);
-        // defaultCamera.transform.position += Vector3.down * (Time.deltaTime * panSpeed);
+        Vector3 direction = Vector3.back;
+        direction.y = 0;
+        direction.Normalize();
+        defaultCamera.transform.Translate(direction * (Time.deltaTime * panSpeed), Space.World);
     }
     
     void PanCameraUp()
     {
-        defaultCamera.transform.position += defaultCamera.transform.forward * (Time.deltaTime * panSpeed);
-        // defaultCamera.transform.position += Vector3.up * (Time.deltaTime * panSpeed);
+        Vector3 direction = Vector3.forward;
+        direction.y = 0;
+        direction.Normalize();
+        defaultCamera.transform.Translate(direction * (Time.deltaTime * panSpeed), Space.World);
     }
 
+    void AdjustZoom()
+    {
+        if (scrollDirection > 0)
+        {
+            if (currentZoom < maxZoom)
+            {
+                defaultCamera.transform.position += defaultCamera.transform.forward * (Time.deltaTime * zoomSpeed);
+                currentZoom += Time.deltaTime * zoomSpeed;
+            }
+        }
+        else if (scrollDirection < 0)
+        {
+            if (currentZoom > 0)
+            {
+                defaultCamera.transform.position -= defaultCamera.transform.forward * (Time.deltaTime * zoomSpeed);
+                currentZoom -= Time.deltaTime * zoomSpeed;
+            }
+        }
+    }
+    
     #endregion
 
     #region Input Methods
@@ -137,5 +171,23 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    public void ZoomControl(InputAction.CallbackContext context)
+    {
+        float scrollY = context.ReadValue<float>();
+
+        if (scrollY > 0)
+        {
+            scrollDirection = 1;
+        }    
+        else if (scrollY < 0)
+        {
+            scrollDirection = -1;
+        }
+        else if (scrollY == 0)
+        {
+            scrollDirection = 0;
+        }
+    }
+    
     #endregion
 }

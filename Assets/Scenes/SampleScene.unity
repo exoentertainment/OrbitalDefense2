@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 899bd23dfd8fbd247a9e4a69fdbb119f, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -249,6 +249,86 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: d877fd29-7f92-41b6-bc53-4ac7f380d7bd
     m_ActionName: 'Player/Secondary Action[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1986959437}
+        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
+        m_MethodName: PanUp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ebcc018e-c1f5-4fc7-a23c-76b5eb9596c2
+    m_ActionName: 'Player/Pan Camera Up[/Keyboard/w]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1986959437}
+        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
+        m_MethodName: PanDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 484382e8-e1a1-4d22-9657-a612721d1862
+    m_ActionName: 'Player/Pan Camera Down[/Keyboard/s]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1986959437}
+        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
+        m_MethodName: PanLeft
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cab89d33-0f5c-4ec6-b4dd-59f7658c00d2
+    m_ActionName: 'Player/Pan Camera Left[/Keyboard/a]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1986959437}
+        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
+        m_MethodName: PanRight
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 37bd545f-8714-4113-9055-a62a08ca006d
+    m_ActionName: 'Player/Pan Camera Right[/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1986959437}
+        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
+        m_MethodName: ZoomControl
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 068aa6de-bd32-4e67-bcee-4dda9395e3be
+    m_ActionName: 'Player/Zoom Control[/Mouse/scroll]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: 
@@ -454,8 +534,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35355335, y: 0.35355338, z: -0.14644659, w: 0.8535534}
-  m_LocalPosition: {x: -48.4, y: -25.9, z: -126.9}
+  m_LocalRotation: {x: 0.37287527, y: 0.20782769, z: -0.08608504, w: 0.9002006}
+  m_LocalPosition: {x: -44.39, y: -25.900002, z: -128.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -922,6 +1002,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipController
   selectedShipVFX: {fileID: 859612127}
   shipMovement: {fileID: 648217609}
+  turretController: {fileID: 648217612}
 --- !u!64 &648217603
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -956,7 +1037,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 648217601}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 450371020da35bd43aeafd6afb90f338, type: 3}
   m_Name: 
@@ -976,7 +1057,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TurretController
   turretListeners:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1235575708}
+        m_TargetAssemblyTypeName: BaseTurret, Assembly-CSharp
+        m_MethodName: SetPrimaryTarget
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &807860784
 GameObject:
   m_ObjectHideFlags: 0
@@ -1160,7 +1253,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 37530f3aa9233c244a50eaef2b0a6534, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1772,8 +1865,26 @@ Transform:
   m_Children:
   - {fileID: 64319059}
   - {fileID: 468527734}
+  - {fileID: 1986959436}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1235575706 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7371184499806819221, guid: 33d3700703dab4a6ca8779e38c060a7e, type: 3}
+  m_PrefabInstance: {fileID: 2088726326}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1235575708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235575706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4d5467b3c7df334c9947a080cb0d9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseTurret
 --- !u!1 &1455490384
 GameObject:
   m_ObjectHideFlags: 0
@@ -2062,6 +2173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipController
   selectedShipVFX: {fileID: 275330695}
   shipMovement: {fileID: 0}
+  turretController: {fileID: 0}
 --- !u!64 &1548956725
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2117,6 +2229,79 @@ Transform:
   - {fileID: 330585546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -24.857, z: 0}
+--- !u!1001 &1742772872
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1826319548640004, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_Name
+      value: Planet_Thunderstorm_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -177.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.49999514
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10.049543
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496199128410986, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8434ab0323243e346bb9c66be1f451c2, type: 3}
 --- !u!1 &1882149662
 GameObject:
   m_ObjectHideFlags: 0
@@ -2231,6 +2416,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1882149662}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1986959435
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1986959436}
+  - component: {fileID: 1986959437}
+  m_Layer: 0
+  m_Name: Camera Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1986959436
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986959435}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1017021134}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1986959437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986959435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b31d222384e912499673430dcbf719c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraManager
+  defaultCamera: {fileID: 2052154209}
+  panSpeed: 10
+  zoomSpeed: 100
+  maxZoom: 20
 --- !u!1 &2052154207
 GameObject:
   m_ObjectHideFlags: 0
@@ -2256,13 +2489,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2052154207}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35355338, y: 0.35355338, z: -0.1464466, w: 0.8535535}
-  m_LocalPosition: {x: -48.4, y: -25.9, z: -126.9}
+  m_LocalRotation: {x: 0.37287527, y: 0.20782767, z: -0.08608504, w: 0.90020055}
+  m_LocalPosition: {x: -44.39, y: -25.9, z: -128.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1582172403}
-  m_LocalEulerAnglesHint: {x: 45, y: 45, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 26, z: 0}
 --- !u!114 &2052154209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2523,6 +2756,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1361057339730727928, guid: 33d3700703dab4a6ca8779e38c060a7e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 648217612}
+    - targetCorrespondingSourceObject: {fileID: 7371184499806819221, guid: 33d3700703dab4a6ca8779e38c060a7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1235575708}
   m_SourcePrefab: {fileID: 100100000, guid: 33d3700703dab4a6ca8779e38c060a7e, type: 3}
 --- !u!1 &2096073877
 GameObject:
@@ -2627,3 +2863,4 @@ SceneRoots:
   - {fileID: 1548956720}
   - {fileID: 1455490385}
   - {fileID: 1017021134}
+  - {fileID: 1742772872}

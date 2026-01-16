@@ -7,6 +7,7 @@ public class ShipController : MonoBehaviour
     [SerializeField] private GameObject selectedShipVFX;
     
     [SerializeField] ShipMovement shipMovement;
+    [SerializeField] TurretController turretController;
 
     #endregion
 
@@ -32,9 +33,10 @@ public class ShipController : MonoBehaviour
         //Play acknowledgement SFX
     }
 
-    //Receive target info from input manager and pass it along to the currently selected ship movement and weapon components
+    //Receive target info from input manager and pass it along to the currently selected ship movement and turret controller
     public void SetTarget(GameObject target)
     {
         shipMovement.SetTarget(target);
+        turretController.SetTarget(target);
     }
 }
