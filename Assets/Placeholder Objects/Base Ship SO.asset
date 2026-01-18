@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BaseShipSO
   maxHealth: 0
   maxShield: 0
-  moveSpeed: 5
+  moveSpeed: 2
   turnSpeed: 1
   minOrbitRadius: 50
   maxOrbitRadius: 50
