@@ -16,6 +16,11 @@ public class ProjectileMove : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    private void Start()
+    {
+        Destroy(gameObject, projectileSO.lifetime);
+    }
+
     private void FixedUpdate()
     {
         Move();

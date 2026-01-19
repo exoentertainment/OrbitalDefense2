@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Test Turret SO
   m_EditorClassIdentifier: Assembly-CSharp::TurretSO
   projectileSO: {fileID: 11400000, guid: 3a61d7ebc04264845a5b2e6d2ca46ac8, type: 2}
+  engageRange: 500
   fireRate: 1.5
   barrelFireDelay: 0.25
   targetLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128

@@ -4,6 +4,8 @@ using UnityEngine;
 public class ProjectileSO : ScriptableObject
 {
     public GameObject projectilePrefab;
+    public GameObject dischargePrefab;
+    public GameObject impactPrefab;
     public int moveSpeed;
     public int lifetime;
 }

@@ -10,7 +10,10 @@ public class ProjectileHit : MonoBehaviour
     
     private void OnCollisionEnter(Collision other)
     {
-        //Spawn impact VFX
+        other.gameObject.TryGetComponent<IHealth>(out IHealth health);
+        health?.TakeDamage(1f);
+        
+        Instantiate(projectileSO.impactPrefab,  other.contacts[0].point, Quaternion.identity);
         //Damage any health component attached to collider such as shield
         Destroy(gameObject);
     }

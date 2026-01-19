@@ -7,7 +7,9 @@ public class BaseShipSO : ScriptableObject
 
     public int maxHealth;
     public int maxShield;
-
+    public float lowShieldPercentage;
+    public float shieldRechargeRate;
+    
     #endregion
 
     #region Movement Variables

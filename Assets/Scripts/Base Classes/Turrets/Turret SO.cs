@@ -7,6 +7,7 @@ public class TurretSO : ScriptableObject
 
     public ProjectileSO projectileSO;
     //public AudioClipSO fireSFX;
+    public int engageRange;
     public float fireRate;
     public float barrelFireDelay;
     public LayerMask targetLayers;

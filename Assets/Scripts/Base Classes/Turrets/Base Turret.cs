@@ -6,11 +6,10 @@ public class BaseTurret : MonoBehaviour
 {
     #region Serialized Fields
 
-    [Header("Components")]
-    //[SerializeField] private TurretRotation turretRotation;
-
-    [SerializeField]
-    LayerMask targetLayers;
+    [Header("Components")] 
+    [SerializeField] private Transform raycastOrigin;
+    
+    [SerializeField] TurretSO turretSO;
 
     #endregion
 
@@ -27,6 +26,8 @@ public class BaseTurret : MonoBehaviour
 
     private TurretRotation turretRotation;
     private TurretAttack turretAttack;
+
+    private float lastTimeOnTarget;
 
     private void Awake()
     {
@@ -57,7 +58,7 @@ public class BaseTurret : MonoBehaviour
 
     void SearchForTarget()
     {
-        Collider[] possibleTargets = Physics.OverlapSphere(transform.position, 25, targetLayers);
+        Collider[] possibleTargets = Physics.OverlapSphere(transform.position, turretSO.engageRange, turretSO.targetLayers);
 
         if (possibleTargets.Length > 0)
         {
@@ -78,6 +79,7 @@ public class BaseTurret : MonoBehaviour
 
             //Set secondary target and pass it along to the turret's components
             currentTarget = secondaryTarget;
+            lastTimeOnTarget = Time.time;
             turretRotation.SetTarget(currentTarget);
             turretAttack?.SetTarget(currentTarget);
         }
@@ -108,16 +110,38 @@ public class BaseTurret : MonoBehaviour
             float distanceToTarget = Vector3.Distance(transform.position, primaryTarget.transform.position);
 
             if (distanceToTarget < 25)
+            {
+                lastTimeOnTarget = Time.time;
                 currentTarget = primaryTarget;
+            }
         }
     }
 
     void CheckLOS()
     {
-        // if (Physics.Raycast(raycastOrigin.position, raycastOrigin.forward * turretSO.projectileSO.range,
-        //         out RaycastHit hit, turretSO.projectileSO.range, turretSO.targetLayers))
-        // {
-        // }
+        if (currentTarget != null)
+        {
+            if (Physics.Raycast(raycastOrigin.position, raycastOrigin.forward * turretSO.engageRange,
+                    out RaycastHit hit, turretSO.engageRange, turretSO.targetLayers))
+            {
+                if (hit.collider.gameObject.layer == currentTarget.layer)
+                {
+                    lastTimeOnTarget = Time.time;
+                }
+            }
+            else
+            {
+                if ((Time.time - lastTimeOnTarget) >= turretSO.fireRate)
+                {
+                    if (currentTarget == secondaryTarget)
+                        secondaryTarget = null;
+
+                    currentTarget = null;
+                    turretRotation?.SetTarget(null);
+                    turretAttack?.SetTarget(null);
+                }
+            }
+        }
     }
 
     private void OnDrawGizmosSelected()

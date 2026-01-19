@@ -67,7 +67,14 @@ public class TurretRotation : MonoBehaviour
 
     public void SetTarget(GameObject newTarget)
     {
-        target = newTarget;
+        if (newTarget != null)
+        {
+            target = newTarget;
+        }
+        else
+        {
+            target = null;
+        }
     }
 
     void Rotate()

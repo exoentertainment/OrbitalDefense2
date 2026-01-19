@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: Base Ship SO
   m_EditorClassIdentifier: Assembly-CSharp::BaseShipSO
   maxHealth: 0
-  maxShield: 0
+  maxShield: 20
+  lowShieldPercentage: 0.5
+  shieldRechargeRate: 0
+  shieldMaterial: {fileID: 2100000, guid: 613b001bf8341de4b8ca644adb03e282, type: 2}
+  lowShieldMaterial: {fileID: 2100000, guid: e19e103fc630dac44966e9f0a84d2a7c, type: 2}
   moveSpeed: 2
   turnSpeed: 1
   minOrbitRadius: 50

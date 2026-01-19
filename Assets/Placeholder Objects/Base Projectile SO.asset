@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Base Projectile SO
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileSO
   projectilePrefab: {fileID: 100000, guid: 2b82c1d0abd2251438d077bb55ccbf3d, type: 3}
+  dischargePrefab: {fileID: 100002, guid: 790963c7fcfae1943be0377a5ca62b52, type: 3}
+  impactPrefab: {fileID: 100000, guid: 064c4b6df88720a419ced439e3d355ed, type: 3}
   moveSpeed: 50
-  lifetime: 0
+  lifetime: 1

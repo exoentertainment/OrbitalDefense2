@@ -6,6 +6,9 @@ public class TurretAttack : MonoBehaviour
 {
     #region Serialized Fields
 
+    [Header("Components")] 
+    [SerializeField] private Transform raycastOrigin;
+    
     [SerializeField] private TurretSO turretSO;
     [SerializeField] private Transform[] spawnPoints;
 
@@ -35,21 +38,30 @@ public class TurretAttack : MonoBehaviour
     
     public void SetTarget(GameObject newTarget)
     {
-        target = newTarget;
+        if (newTarget != null)
+        {
+            target = newTarget;
+        }
+        else
+        {
+            target = null;
+        }
     }
 
     void Fire()
     {
-        if ((Time.time - lastFireTime) > turretSO.fireRate)
+        if (IsTargetInLOS())
         {
-            StartCoroutine(FireRoutine());
+            if ((Time.time - lastFireTime) > turretSO.fireRate)
+            {
+                StartCoroutine(FireRoutine());
+            }
         }
     }
 
 
     protected virtual IEnumerator FireRoutine()
     {
-        //lastTimeOnTarget = Time.time;
         lastFireTime = Time.time;
 
         foreach (Transform spawnPoint in spawnPoints)
@@ -69,10 +81,28 @@ public class TurretAttack : MonoBehaviour
             
             Instantiate(turretSO.projectileSO.projectilePrefab,  spawnPoint.position, spawnPoint.rotation);
             
+            
+            GameObject muzzle = Instantiate(turretSO.projectileSO.dischargePrefab,  spawnPoint.position, spawnPoint.rotation);
+            Destroy(muzzle, .1f);
+            
             yield return new WaitForSeconds(turretSO.barrelFireDelay);
         }
         
         // if(AudioManager.instance != null)
         //     AudioManager.instance.PlaySound(turretSO.fireSFX);
+    }
+    
+    bool IsTargetInLOS()
+    {
+        if (Physics.Raycast(raycastOrigin.position, raycastOrigin.forward * turretSO.engageRange,
+                out RaycastHit hit, turretSO.engageRange, turretSO.targetLayers))
+        {
+            if (hit.collider.gameObject.layer == target.layer)
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }
