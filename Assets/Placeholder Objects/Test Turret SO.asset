@@ -13,9 +13,15 @@ MonoBehaviour:
   m_Name: Test Turret SO
   m_EditorClassIdentifier: Assembly-CSharp::TurretSO
   projectileSO: {fileID: 11400000, guid: 3a61d7ebc04264845a5b2e6d2ca46ac8, type: 2}
-  engageRange: 500
+  fireSFX: {fileID: 11400000, guid: c1e92e123ee01da4ab83e2bbcb50a369, type: 2}
+  engageRange: 100
   fireRate: 1.5
   barrelFireDelay: 0.25
   targetLayers:
     serializedVersion: 2
     m_Bits: 128
+  TrackingType: 0
+  HeadingTrackingSpeed: 50
+  ElevationTrackingSpeed: 50
+  HeadingLimit: {x: -180, y: 180}
+  ElevationLimit: {x: -20, y: 60}

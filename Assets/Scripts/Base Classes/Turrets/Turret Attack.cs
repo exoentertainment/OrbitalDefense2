@@ -13,14 +13,14 @@ public class TurretAttack : MonoBehaviour
     [SerializeField] private Transform[] spawnPoints;
 
     #endregion
-
-    BaseTurret turretBase;
+    
     private GameObject target;
+    ObjectPool projectilePool;
     float lastFireTime;
 
     private void Awake()
     {
-        turretBase = GetComponent<BaseTurret>();
+        projectilePool = GetComponent<ObjectPool>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -66,30 +66,32 @@ public class TurretAttack : MonoBehaviour
 
         foreach (Transform spawnPoint in spawnPoints)
         {
-            // GameObject projectile = projectilePool.GetPooledObject(); 
-            // if (projectile != null) {
-            //     projectile.transform.position = spawnPoint.position;
-            //     projectile.transform.rotation = platformTurret.rotation;
-            //     projectile.SetActive(true);
-            // }
+            GameObject projectile = projectilePool.GetPooledObject(); 
+            if (projectile != null) {
+                projectile.transform.position = spawnPoint.position;
+                projectile.transform.rotation = spawnPoint.rotation;
+                projectile.SetActive(true);
+            }
             
             // Instantiate(turretSO.projectileSO.projectilePrefab, spawnPoint.position, platformTurret.rotation);
-            //
+            
             // if (turretSO.projectileSO.dischargePrefab != null)
             //     Instantiate(turretSO.projectileSO.dischargePrefab, spawnPoint.position,
             //         Quaternion.identity);
             
-            Instantiate(turretSO.projectileSO.projectilePrefab,  spawnPoint.position, spawnPoint.rotation);
+            // Instantiate(turretSO.projectileSO.projectilePrefab,  spawnPoint.position, spawnPoint.rotation);
             
             
             GameObject muzzle = Instantiate(turretSO.projectileSO.dischargePrefab,  spawnPoint.position, spawnPoint.rotation);
             Destroy(muzzle, .1f);
             
+            if(AudioManager.instance != null)
+                AudioManager.instance.PlaySound(turretSO.fireSFX);
+            
             yield return new WaitForSeconds(turretSO.barrelFireDelay);
         }
         
-        // if(AudioManager.instance != null)
-        //     AudioManager.instance.PlaySound(turretSO.fireSFX);
+
     }
     
     bool IsTargetInLOS()
@@ -104,5 +106,11 @@ public class TurretAttack : MonoBehaviour
         }
         
         return false;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, turretSO.engageRange);
     }
 }

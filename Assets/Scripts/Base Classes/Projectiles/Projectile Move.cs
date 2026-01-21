@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public class ProjectileMove : MonoBehaviour
 {
@@ -16,14 +17,22 @@ public class ProjectileMove : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Start()
-    {
-        Destroy(gameObject, projectileSO.lifetime);
-    }
-
     private void FixedUpdate()
     {
         Move();
+    }
+    
+    private void OnEnable()
+    {
+        StartCoroutine(DeactivateRoutine());
+    }
+    
+    IEnumerator DeactivateRoutine()
+    {
+        yield return new WaitForSeconds(projectileSO.lifetime);
+        
+        if(gameObject.activeSelf)
+            gameObject.SetActive(false);
     }
 
     void Move()

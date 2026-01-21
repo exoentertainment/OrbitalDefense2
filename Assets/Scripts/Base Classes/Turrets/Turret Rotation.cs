@@ -5,21 +5,22 @@ public class TurretRotation : MonoBehaviour
 {
     #region Serialized Fields
 
-    [SerializeField] TurretTrackingType TrackingType;
+    [SerializeField] private TurretSO turretSO;
+    //[SerializeField] TurretTrackingType TrackingType;
 
     [SerializeField] GameObject Mount;
     [SerializeField] GameObject Swivel;
 
-    [SerializeField] float HeadingTrackingSpeed = 2f;
-    [SerializeField] float ElevationTrackingSpeed = 2f;
-    [SerializeField] Vector2 HeadingLimit;
-    [SerializeField] Vector2 ElevationLimit;
-
-    public enum TurretTrackingType
-    {
-        Step,
-        Smooth,
-    }
+    // [SerializeField] float HeadingTrackingSpeed = 2f;
+    // [SerializeField] float ElevationTrackingSpeed = 2f;
+    // [SerializeField] Vector2 HeadingLimit;
+    // [SerializeField] Vector2 ElevationLimit;
+    //
+    // public enum TurretTrackingType
+    // {
+    //     Step,
+    //     Smooth,
+    // }
 
     #endregion
 
@@ -54,7 +55,7 @@ public class TurretRotation : MonoBehaviour
         defaultDir = Swivel.transform.forward;
         defaultRot = Quaternion.FromToRotation(transform.forward, defaultDir);
 
-        if (HeadingLimit.y - HeadingLimit.x >= 359.9f)
+        if (turretSO.HeadingLimit.y - turretSO.HeadingLimit.x >= 359.9f)
             fullAccess = true;
     }
 
@@ -79,7 +80,7 @@ public class TurretRotation : MonoBehaviour
 
     void Rotate()
     {
-        if (TrackingType == TurretTrackingType.Step)
+        if (turretSO.TrackingType == TurretSO.TurretTrackingType.Step)
         {
             if (barrelTransform != null)
             {
@@ -94,11 +95,11 @@ public class TurretRotation : MonoBehaviour
                 float turretHeading = F3DMath.SignedVectorAngle(defaultRot * headTransform.forward,
                     headTransform.forward, headTransform.up);
 
-                float headingStep = HeadingTrackingSpeed * Time.deltaTime;
+                float headingStep = turretSO.HeadingTrackingSpeed * Time.deltaTime;
 
                 // Heading step and correction
                 // Full rotation
-                if (HeadingLimit.x <= -180f && HeadingLimit.y >= 180f)
+                if (turretSO.HeadingLimit.x <= -180f && turretSO.HeadingLimit.y >= 180f)
                     headingStep *= Mathf.Sign(headingAngle);
                 else // Limited rotation
                     headingStep *= Mathf.Sign(turretDefaultToTargetAngle - turretHeading);
@@ -108,9 +109,9 @@ public class TurretRotation : MonoBehaviour
                     headingStep = headingAngle;
 
                 // Heading limits
-                if (curHeadingAngle + headingStep > HeadingLimit.x &&
-                    curHeadingAngle + headingStep < HeadingLimit.y ||
-                    HeadingLimit.x <= -180f && HeadingLimit.y >= 180f || fullAccess)
+                if (curHeadingAngle + headingStep > turretSO.HeadingLimit.x &&
+                    curHeadingAngle + headingStep < turretSO.HeadingLimit.y ||
+                    turretSO.HeadingLimit.x <= -180f && turretSO.HeadingLimit.y >= 180f || fullAccess)
                 {
                     curHeadingAngle += headingStep;
                     headTransform.rotation = headTransform.rotation * Quaternion.Euler(0f, headingStep, 0f);
@@ -124,20 +125,20 @@ public class TurretRotation : MonoBehaviour
                     F3DMath.SignedVectorAngle(barrelTransform.forward, elevationVector, headTransform.right);
 
                 // Elevation step and correction
-                float elevationStep = Mathf.Sign(elevationAngle) * ElevationTrackingSpeed * Time.deltaTime;
+                float elevationStep = Mathf.Sign(elevationAngle) * turretSO.ElevationTrackingSpeed * Time.deltaTime;
                 if (Mathf.Abs(elevationStep) > Mathf.Abs(elevationAngle))
                     elevationStep = elevationAngle;
 
                 // Elevation limits
-                if (curElevationAngle + elevationStep < ElevationLimit.y &&
-                    curElevationAngle + elevationStep > ElevationLimit.x)
+                if (curElevationAngle + elevationStep < turretSO.ElevationLimit.y &&
+                    curElevationAngle + elevationStep > turretSO.ElevationLimit.x)
                 {
                     curElevationAngle += elevationStep;
                     barrelTransform.rotation = barrelTransform.rotation * Quaternion.Euler(elevationStep, 0f, 0f);
                 }
             }
         }
-        else if (TrackingType == TurretTrackingType.Smooth)
+        else if (turretSO.TrackingType == TurretSO.TurretTrackingType.Smooth)
         {
             Transform barrelX = barrelTransform;
             Transform barrelY = Swivel.transform;
@@ -147,21 +148,21 @@ public class TurretRotation : MonoBehaviour
             Quaternion targetRotationX = Quaternion.LookRotation(targetX, headTransform.up);
 
             barrelX.transform.rotation = Quaternion.Slerp(barrelX.transform.rotation, targetRotationX,
-                HeadingTrackingSpeed * Time.deltaTime);
+                turretSO.HeadingTrackingSpeed * Time.deltaTime);
             barrelX.transform.localEulerAngles = new Vector3(barrelX.transform.localEulerAngles.x, 0f, 0f);
 
             //checking for turning up too much
             if (barrelX.transform.localEulerAngles.x >= 180f &&
-                barrelX.transform.localEulerAngles.x < (360f - ElevationLimit.y))
+                barrelX.transform.localEulerAngles.x < (360f - turretSO.ElevationLimit.y))
             {
-                barrelX.transform.localEulerAngles = new Vector3(360f - ElevationLimit.y, 0f, 0f);
+                barrelX.transform.localEulerAngles = new Vector3(360f - turretSO.ElevationLimit.y, 0f, 0f);
             }
 
             //down
             else if (barrelX.transform.localEulerAngles.x < 180f &&
-                     barrelX.transform.localEulerAngles.x > -ElevationLimit.x)
+                     barrelX.transform.localEulerAngles.x > -turretSO.ElevationLimit.x)
             {
-                barrelX.transform.localEulerAngles = new Vector3(-ElevationLimit.x, 0f, 0f);
+                barrelX.transform.localEulerAngles = new Vector3(-turretSO.ElevationLimit.x, 0f, 0f);
             }
 
             //finding position for turning just for Y axis
@@ -171,23 +172,23 @@ public class TurretRotation : MonoBehaviour
             Quaternion targetRotationY = Quaternion.LookRotation(targetY - barrelY.position, barrelY.transform.up);
 
             barrelY.transform.rotation = Quaternion.Slerp(barrelY.transform.rotation, targetRotationY,
-                ElevationTrackingSpeed * Time.deltaTime);
+                turretSO.ElevationTrackingSpeed * Time.deltaTime);
             barrelY.transform.localEulerAngles = new Vector3(0f, barrelY.transform.localEulerAngles.y, 0f);
 
             if (!fullAccess)
             {
                 //checking for turning left
                 if (barrelY.transform.localEulerAngles.y >= 180f &&
-                    barrelY.transform.localEulerAngles.y < (360f - HeadingLimit.y))
+                    barrelY.transform.localEulerAngles.y < (360f - turretSO.HeadingLimit.y))
                 {
-                    barrelY.transform.localEulerAngles = new Vector3(0f, 360f - HeadingLimit.y, 0f);
+                    barrelY.transform.localEulerAngles = new Vector3(0f, 360f - turretSO.HeadingLimit.y, 0f);
                 }
 
                 //right
                 else if (barrelY.transform.localEulerAngles.y < 180f &&
-                         barrelY.transform.localEulerAngles.y > -HeadingLimit.x)
+                         barrelY.transform.localEulerAngles.y > -turretSO.HeadingLimit.x)
                 {
-                    barrelY.transform.localEulerAngles = new Vector3(0f, -HeadingLimit.x, 0f);
+                    barrelY.transform.localEulerAngles = new Vector3(0f, -turretSO.HeadingLimit.x, 0f);
                 }
             }
         }

@@ -15,6 +15,6 @@ public class ProjectileHit : MonoBehaviour
         
         Instantiate(projectileSO.impactPrefab,  other.contacts[0].point, Quaternion.identity);
         //Damage any health component attached to collider such as shield
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }
