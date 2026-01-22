@@ -9,6 +9,10 @@ public class AudioManager : MonoBehaviour
 {
     #region --Clips--
 
+    [Header("Variables")] 
+    [SerializeField] private int minDistanceRolloff;
+    [SerializeField] private int maxDistanceRolloff;
+    
     [Header("Audio Scriptable Objects")]
     [SerializeField] MusicClipsSO musicClips;
     [SerializeField] UIAudioClips uiAudioClips;
@@ -40,6 +44,11 @@ public class AudioManager : MonoBehaviour
     {
         GameObject soundObject = new GameObject("Audio Clip Source");
         AudioSource audioSource = soundObject.AddComponent<AudioSource>();
+        
+        audioSource.spatialBlend = 1;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.minDistance = minDistanceRolloff;
+        audioSource.maxDistance = maxDistanceRolloff;
 
         audioSource.clip = soundSO.clip;
         audioSource.loop = soundSO.loop;

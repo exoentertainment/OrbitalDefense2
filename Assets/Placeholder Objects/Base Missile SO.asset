@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cc08bcf45051fc4a84da7ce07f1b955, type: 3}
+  m_Name: Base Missile SO
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileSO
+  projectilePrefab: {fileID: 1950336915788453099, guid: c8d4d8bccc1ff66438e1988aeaac031d, type: 3}
+  dischargePrefab: {fileID: 100002, guid: 790963c7fcfae1943be0377a5ca62b52, type: 3}
+  impactPrefab: {fileID: 100000, guid: 064c4b6df88720a419ced439e3d355ed, type: 3}
+  moveSpeed: 1000
+  lifetime: 4

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a4b23c1ac0331c48abb9927f157f4de, type: 3}
-  m_Name: Test Turret SO
+  m_Name: Test Missile Turret SO
   m_EditorClassIdentifier: Assembly-CSharp::TurretSO
   projectileSO: {fileID: 11400000, guid: 3a61d7ebc04264845a5b2e6d2ca46ac8, type: 2}
   fireSFX: {fileID: 11400000, guid: c1e92e123ee01da4ab83e2bbcb50a369, type: 2}

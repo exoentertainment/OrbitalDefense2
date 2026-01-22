@@ -10,6 +10,7 @@ public class TurretAttack : MonoBehaviour
     [SerializeField] private Transform raycastOrigin;
     
     [SerializeField] private TurretSO turretSO;
+    [SerializeField] private WeaponType weaponType;
     [SerializeField] private Transform[] spawnPoints;
 
     #endregion
@@ -18,6 +19,12 @@ public class TurretAttack : MonoBehaviour
     ObjectPool projectilePool;
     float lastFireTime;
 
+    enum WeaponType
+    {
+        Unguided = 0,
+        Guided
+    }
+    
     private void Awake()
     {
         projectilePool = GetComponent<ObjectPool>();
@@ -71,6 +78,11 @@ public class TurretAttack : MonoBehaviour
                 projectile.transform.position = spawnPoint.position;
                 projectile.transform.rotation = spawnPoint.rotation;
                 projectile.SetActive(true);
+
+                if (weaponType == WeaponType.Guided)
+                {
+                    projectile.GetComponent<ProjectileHomingMove>().SetTarget(target);
+                }
             }
             
             // Instantiate(turretSO.projectileSO.projectilePrefab, spawnPoint.position, platformTurret.rotation);
@@ -80,11 +92,15 @@ public class TurretAttack : MonoBehaviour
             //         Quaternion.identity);
             
             // Instantiate(turretSO.projectileSO.projectilePrefab,  spawnPoint.position, spawnPoint.rotation);
-            
-            
-            GameObject muzzle = Instantiate(turretSO.projectileSO.dischargePrefab,  spawnPoint.position, spawnPoint.rotation);
-            Destroy(muzzle, .1f);
-            
+
+
+            if (turretSO.projectileSO.dischargePrefab != null)
+            {
+                GameObject muzzle = Instantiate(turretSO.projectileSO.dischargePrefab, spawnPoint.position,
+                    spawnPoint.rotation);
+                Destroy(muzzle, .1f);
+            }
+
             if(AudioManager.instance != null)
                 AudioManager.instance.PlaySound(turretSO.fireSFX);
             
