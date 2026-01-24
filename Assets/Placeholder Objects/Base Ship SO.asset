@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c1241e5b22dec479f6fb723ddce09b, type: 3}
   m_Name: Base Ship SO
   m_EditorClassIdentifier: Assembly-CSharp::BaseShipSO
-  maxHealth: 0
+  maxHealth: 10
   maxShield: 20
   lowShieldPercentage: 0.5
-  shieldRechargeRate: 0
-  shieldMaterial: {fileID: 2100000, guid: 613b001bf8341de4b8ca644adb03e282, type: 2}
-  lowShieldMaterial: {fileID: 2100000, guid: e19e103fc630dac44966e9f0a84d2a7c, type: 2}
+  shieldRechargeRate: 0.01
   moveSpeed: 2
   turnSpeed: 1
   minOrbitRadius: 50
   maxOrbitRadius: 50
+  explosionPrefab: {fileID: 1002090002221796, guid: 4bf4aac8b7619e94d93435156396e1f2, type: 3}
+  debrisPrefab: {fileID: 128974, guid: 44926b0dc71c02b47964589332ac7970, type: 3}
+  explosionFrequency: 0.75
+  numExplosions: 3

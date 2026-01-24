@@ -32,7 +32,7 @@ public class ShieldHealth : MonoBehaviour, IHealth
     {
         isHit = false;
         
-        //Recharge();
+        Recharge();
     }
 
     public void TakeDamage(float damage)
@@ -48,12 +48,14 @@ public class ShieldHealth : MonoBehaviour, IHealth
                 if (currentShield < shipSO.maxShield * shipSO.lowShieldPercentage && !isLowShield)
                 {
                     isLowShield = true;
+                    mainShield.GetComponent<MeshCollider>().enabled = false;
                     mainShield.SetActive(false);
                     lowShield.SetActive(true);
                 }
             }
             else
             {
+                lowShield.GetComponent<MeshCollider>().enabled = false;
                 lowShield.SetActive(false);
             }
         }
@@ -61,8 +63,10 @@ public class ShieldHealth : MonoBehaviour, IHealth
 
     void Recharge()
     {
-        if(currentShield < shipSO.maxShield)
-            currentShield += shipSO.maxShield * shipSO.shieldRechargeRate *  Time.deltaTime;
+        if (currentShield < shipSO.maxShield)
+        {
+            currentShield += shipSO.maxShield * (shipSO.shieldRechargeRate * Time.deltaTime);
+        }
 
         if (currentShield > shipSO.maxShield * shipSO.lowShieldPercentage && isLowShield)
         {

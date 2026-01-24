@@ -29,7 +29,10 @@ public class BaseShipSO : ScriptableObject
 
     #region Explosion  Variables
 
-
+    public GameObject explosionPrefab;
+    public GameObject debrisPrefab;
+    public float explosionFrequency;
+    public int numExplosions;
 
     #endregion
 }

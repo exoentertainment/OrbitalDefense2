@@ -13,7 +13,10 @@ public class ProjectileHit : MonoBehaviour
         other.gameObject.TryGetComponent<IHealth>(out IHealth health);
         health?.TakeDamage(1f);
         
-        Instantiate(projectileSO.impactPrefab,  other.contacts[0].point, Quaternion.identity);
+        Vector3 collisionNormal = other.contacts[0].normal;
+        Quaternion collisionRotation = Quaternion.LookRotation(collisionNormal);
+        Instantiate(projectileSO.impactPrefab,  other.contacts[0].point, collisionRotation);
+
         //Damage any health component attached to collider such as shield
         gameObject.SetActive(false);
     }

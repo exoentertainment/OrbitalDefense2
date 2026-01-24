@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ShipController : MonoBehaviour
@@ -10,6 +11,9 @@ public class ShipController : MonoBehaviour
     [SerializeField] TurretController turretController;
 
     #endregion
+
+    GameObject currentTarget;
+    private bool isWaitingForTarget;
 
     //When the ship is selected, turn on the selection VFX, the health bar, send ship data to the UI, play selection SFX
     public void ShipSelected()
@@ -36,6 +40,8 @@ public class ShipController : MonoBehaviour
     //Receive target info from input manager and pass it along to the currently selected ship movement and turret controller
     public void SetTarget(GameObject target)
     {
+        isWaitingForTarget = true;
+        
         shipMovement.SetTarget(target);
         turretController.SetTarget(target);
     }

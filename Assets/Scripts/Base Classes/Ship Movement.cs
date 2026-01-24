@@ -7,6 +7,7 @@ public class ShipMovement : MonoBehaviour
     #region Serialized Fields
 
     [SerializeField] private BaseShipSO shipSO;
+    [SerializeField] private GameObject engines;
 
     #endregion
 
@@ -17,17 +18,30 @@ public class ShipMovement : MonoBehaviour
 
     private bool isMovingToDestination;
     private bool isMovingToTarget;
-
+    bool isWaitingForTarget;
+    
     private void Start()
     {
-        movementLayerOffset = GameObject.FindGameObjectWithTag("Movement Layer").GetComponent<InteractionLayer>().ReturnOffset();
+        movementLayerOffset = GameObject.FindGameObjectWithTag("Movement Layer").GetComponent<InteractionLayer>()
+            .ReturnOffset();
     }
 
     private void Update()
     {
-        CheckDistanceToDestination();
-        MoveShip();
-        RotateShip();
+        if (targetObject != null)
+        {
+            CheckDistanceToDestination();
+            MoveShip();
+            RotateShip();
+        }
+        else
+        {
+            if (!isWaitingForTarget)
+            {
+                isWaitingForTarget = true;
+                DeactivateEngines();
+            }
+        }
     }
 
     //If either a standard move or move to target is set
@@ -47,8 +61,9 @@ public class ShipMovement : MonoBehaviour
             targetVector.Normalize();
             Quaternion targetRotation = Quaternion.LookRotation(targetVector);
 
-            
-            transform.rotation = Quaternion.SlerpUnclamped(transform.rotation, targetRotation, shipSO.turnSpeed * Time.deltaTime);
+
+            transform.rotation =
+                Quaternion.SlerpUnclamped(transform.rotation, targetRotation, shipSO.turnSpeed * Time.deltaTime);
         }
         else if (isMovingToTarget)
         {
@@ -56,11 +71,12 @@ public class ShipMovement : MonoBehaviour
             targetVector.Normalize();
             Quaternion targetRotation = Quaternion.LookRotation(targetVector);
 
-            
-            transform.rotation = Quaternion.SlerpUnclamped(transform.rotation, targetRotation, shipSO.turnSpeed * Time.deltaTime);
+
+            transform.rotation =
+                Quaternion.SlerpUnclamped(transform.rotation, targetRotation, shipSO.turnSpeed * Time.deltaTime);
         }
     }
-    
+
     //Set the destination position for a move order
     public void SetDestinationPos(Vector3 pos)
     {
@@ -79,21 +95,27 @@ public class ShipMovement : MonoBehaviour
                 return;
             }
         }
-        else if(isMovingToTarget)
+        else if (isMovingToTarget)
             if (Vector3.Distance(transform.position, targetPos) <= 1)
                 SetNewTargetPos();
     }
-    
+
     //Receive target from ship controller, set new position around target
     public void SetTarget(GameObject target)
     {
-        isMovingToDestination = false;
-        isMovingToTarget = true;
-        
-        targetObject = target;
+        if (target != null)
+        {
+            isMovingToDestination = false;
+            isMovingToTarget = true;
+            isWaitingForTarget = false;
 
-        Vector3 randomSpot = (Random.insideUnitSphere * Random.Range(shipSO.minOrbitRadius, shipSO.maxOrbitRadius));
-        targetPos = randomSpot + target.transform.position;
+            targetObject = target;
+
+            Vector3 randomSpot = (Random.insideUnitSphere * Random.Range(shipSO.minOrbitRadius, shipSO.maxOrbitRadius));
+            targetPos = randomSpot + target.transform.position;
+            
+            ActivateEngines();
+        }
     }
 
     //Assign a new random spot around the target
@@ -103,7 +125,17 @@ public class ShipMovement : MonoBehaviour
         targetPos = randomSpot + targetObject.transform.position;
     }
 
-    private void OnDrawGizmosSelected()
+    void ActivateEngines()
+    {
+        engines.SetActive(true);
+    }
+    
+    void DeactivateEngines()
+    {
+        engines.SetActive(false);
+    }
+
+private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, shipSO.minOrbitRadius);
