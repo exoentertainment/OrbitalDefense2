@@ -79,7 +79,7 @@ public class TurretAttack : MonoBehaviour
                 projectile.transform.rotation = spawnPoint.rotation;
                 projectile.SetActive(true);
 
-                if (weaponType == WeaponType.Guided)
+                if (weaponType == WeaponType.Guided && target != null)
                 {
                     projectile.GetComponent<ProjectileHomingMove>().SetTarget(target);
                 }

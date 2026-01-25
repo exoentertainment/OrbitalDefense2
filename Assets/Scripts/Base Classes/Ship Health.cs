@@ -55,6 +55,8 @@ public class ShipHealth : MonoBehaviour, IHealth
         
         for (int x = 0; x < shipSO.numExplosions; x++)
         {
+            yield return new WaitForSeconds(shipSO.explosionFrequency);
+            
             Vector3 randomSpot = new Vector3(
                 Random.Range(shipCollider.bounds.center.x - shipCollider.bounds.size.x / 2,
                     shipCollider.bounds.center.x + shipCollider.bounds.size.x / 2),
@@ -64,11 +66,9 @@ public class ShipHealth : MonoBehaviour, IHealth
                     shipCollider.bounds.center.z + shipCollider.bounds.size.z / 2));
             
             Instantiate(shipSO.explosionPrefab,  randomSpot, Quaternion.identity);
-            
-            yield return new WaitForSeconds(shipSO.explosionFrequency);
         }
         
-        Instantiate(shipSO.debrisPrefab, transform.position, Quaternion.identity);
+        Instantiate(shipSO.debrisPrefab[Random.Range(0, shipSO.debrisPrefab.Length)], transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

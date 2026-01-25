@@ -6,6 +6,9 @@ public class ProjectileSO : ScriptableObject
     public GameObject projectilePrefab;
     public GameObject dischargePrefab;
     public GameObject impactPrefab;
+
+    public int maxHealth;
     public int moveSpeed;
     public int lifetime;
+    public LayerMask targetLayers;
 }

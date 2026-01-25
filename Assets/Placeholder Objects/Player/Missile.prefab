@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8380418894917033230}
   - component: {fileID: -5271537389648356824}
   - component: {fileID: -6853200012776273945}
+  - component: {fileID: -2628156225793538794}
   m_Layer: 9
   m_Name: Missile
   m_TagString: Untagged
@@ -172,6 +173,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d3ede5ca7c32064198ab508b0737248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileHit
+  projectileSO: {fileID: 11400000, guid: d342878e46897a04aa9efd3b352bf4ef, type: 2}
+  hasProximityFuse: 0
+  proximityRange: 0
+--- !u!114 &-2628156225793538794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1950336915788453099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a764a53482ba63f46bf7251912bfdd80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileHealth
   projectileSO: {fileID: 11400000, guid: d342878e46897a04aa9efd3b352bf4ef, type: 2}
 --- !u!1001 &695863315590951100
 PrefabInstance:

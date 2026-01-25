@@ -30,8 +30,13 @@ public class ProjectileHomingMove : MonoBehaviour
 
     private void OnEnable()
     {
-        //targetOffset = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f),  Random.Range(-1f, 1f));
         StartCoroutine(DeactivateRoutine());
+    }
+
+    private void Update()
+    {
+        if(target == null)
+            FindClosestTarget();
     }
 
     private void FixedUpdate()
@@ -49,10 +54,6 @@ public class ProjectileHomingMove : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rotateDir), Time.deltaTime * turnSpeed);
             rb.linearVelocity = transform.rotation * Vector3.forward * (projectileSO.moveSpeed * Time.fixedDeltaTime);
         }
-        else
-        {
-            //FindClosestTarget();
-        }
     }
     
     public void SetTarget(GameObject potentialTarget)
@@ -66,9 +67,32 @@ public class ProjectileHomingMove : MonoBehaviour
     {
         Collider targetCollider = target.GetComponent<Collider>();
         targetOffset = new Vector3(
-            Random.Range(-targetCollider.bounds.size.x/2, targetCollider.bounds.size.x/2),
-            Random.Range(-targetCollider.bounds.size.y/2, targetCollider.bounds.size.y/2),
-            Random.Range(-targetCollider.bounds.size.z/2, targetCollider.bounds.size.z/2));
+            Random.Range(-targetCollider.bounds.size.x/3, targetCollider.bounds.size.x/3),
+            Random.Range(-targetCollider.bounds.size.y/3, targetCollider.bounds.size.y/3),
+            Random.Range(-targetCollider.bounds.size.z/3, targetCollider.bounds.size.z/3));
+    }
+    
+    void FindClosestTarget()
+    {
+        Collider[] possibleTargets = Physics.OverlapSphere(transform.position, Mathf.Infinity,
+            projectileSO.targetLayers);
+
+        if (possibleTargets.Length > 0)
+        {
+            float closestEnemy = Mathf.Infinity;
+
+            for (int x = 0; x < possibleTargets.Length; x++)
+            {
+                float distanceToEnemy =
+                    Vector3.Distance(possibleTargets[x].transform.position, transform.position);
+
+                if (distanceToEnemy < closestEnemy)
+                {
+                    closestEnemy = distanceToEnemy;
+                    target = possibleTargets[x].gameObject;
+                }
+            }
+        }
     }
     
     IEnumerator DeactivateRoutine()

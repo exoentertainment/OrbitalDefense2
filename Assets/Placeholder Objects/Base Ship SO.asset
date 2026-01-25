@@ -21,6 +21,11 @@ MonoBehaviour:
   minOrbitRadius: 50
   maxOrbitRadius: 50
   explosionPrefab: {fileID: 1002090002221796, guid: 4bf4aac8b7619e94d93435156396e1f2, type: 3}
-  debrisPrefab: {fileID: 128974, guid: 44926b0dc71c02b47964589332ac7970, type: 3}
+  debrisPrefab:
+  - {fileID: 1751908302768388, guid: abd597ae29f8f25449d1cb7a0035b700, type: 3}
+  - {fileID: 1716888869384812, guid: 62efc24454c516e4eb91947a3223ffa4, type: 3}
+  - {fileID: 1531962446101674, guid: dc79b625963101b43b6271533c3ca425, type: 3}
+  - {fileID: 1115591715268694, guid: e49a4ef7c1cc1104da427f6686ba0c2c, type: 3}
+  - {fileID: 1374473877756026, guid: 80e999b504008a34d9b96a11d3419e4d, type: 3}
   explosionFrequency: 0.75
   numExplosions: 3
