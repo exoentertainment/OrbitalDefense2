@@ -15,13 +15,15 @@ MonoBehaviour:
   projectileSO: {fileID: 11400000, guid: 4a2f61eeb3c428848a80f821a2717133, type: 2}
   fireSFX: {fileID: 11400000, guid: c1e92e123ee01da4ab83e2bbcb50a369, type: 2}
   engageRange: 100
-  fireRate: 0.1
-  barrelFireDelay: 0.25
+  minEngageRange: 10
+  fireRate: 0.2
+  barrelFireDelay: 0
   targetLayers:
     serializedVersion: 2
-    m_Bits: 512
-  TrackingType: 0
-  HeadingTrackingSpeed: 150
-  ElevationTrackingSpeed: 150
+    m_Bits: 576
+  targetPredictionDelay: 0.1
+  TrackingType: 1
+  HeadingTrackingSpeed: 300
+  ElevationTrackingSpeed: 300
   HeadingLimit: {x: -180, y: 180}
   ElevationLimit: {x: -80, y: 10}

@@ -20,6 +20,7 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 128
+  targetPredictionDelay: 1
   TrackingType: 0
   HeadingTrackingSpeed: 50
   ElevationTrackingSpeed: 50

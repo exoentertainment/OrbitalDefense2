@@ -95,7 +95,7 @@ public class BaseTurret : MonoBehaviour
             float distanceToTarget = Vector3.Distance(transform.position, currentTarget.transform.position);
 
             //If the distance to current target is beyond the turret's range
-            if (distanceToTarget > turretSO.engageRange)
+            if (distanceToTarget > turretSO.engageRange || distanceToTarget < turretSO.minEngageRange)
             {
                 //If the current target is the secondary target then set secondary to null
                 if (currentTarget == secondaryTarget)
@@ -151,5 +151,6 @@ public class BaseTurret : MonoBehaviour
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, turretSO.engageRange);
+        Gizmos.DrawWireSphere(transform.position, turretSO.minEngageRange);
     }
 }

@@ -16,7 +16,7 @@ MonoBehaviour:
   dischargePrefab: {fileID: 100002, guid: 790963c7fcfae1943be0377a5ca62b52, type: 3}
   impactPrefab: {fileID: 1854104233019004, guid: 0e997dfc8f60c1d42b15083350905dca, type: 3}
   maxHealth: 0
-  moveSpeed: 500
+  moveSpeed: 600
   lifetime: 4
   targetLayers:
     serializedVersion: 2

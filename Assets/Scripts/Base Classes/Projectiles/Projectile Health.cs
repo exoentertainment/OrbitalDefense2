@@ -34,7 +34,10 @@ public class ProjectileHealth : MonoBehaviour, IHealth
 
             currentHealth -= (int)damage;
             if (currentHealth <= 0)
+            {
+                Instantiate(projectileSO.impactPrefab, transform.position, Quaternion.identity);
                 gameObject.SetActive(false);
+            }
         }
     }
 }

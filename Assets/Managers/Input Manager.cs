@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] private GameObject movementPlane;
     
     [SerializeField] GameObject targetEffect;
+    
     #endregion
     
     //Left mouse click selects the ship at mouse cursor and sends to ship manager to store

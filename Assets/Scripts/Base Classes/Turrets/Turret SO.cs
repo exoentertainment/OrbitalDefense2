@@ -8,6 +8,7 @@ public class TurretSO : ScriptableObject
     public ProjectileSO projectileSO;
     public AudioClipSO fireSFX;
     public int engageRange;
+    public int minEngageRange;
     public float fireRate;
     public float barrelFireDelay;
     public LayerMask targetLayers;
@@ -16,6 +17,7 @@ public class TurretSO : ScriptableObject
 
     #region Rotation Variables
 
+    public float targetPredictionDelay;
     public TurretTrackingType TrackingType;
     public float HeadingTrackingSpeed = 2f;
     public float ElevationTrackingSpeed = 2f;

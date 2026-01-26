@@ -10,8 +10,6 @@ public class TurretRotation : MonoBehaviour
     [SerializeField] GameObject Mount;
     [SerializeField] GameObject Swivel;
 
-    [SerializeField] float offsetDelay;
-
     #endregion
 
     #region Variables
@@ -32,11 +30,11 @@ public class TurretRotation : MonoBehaviour
 
     private Vector3 priorPos;
     private Vector3 targetPosOffset;
+    private float lastOffsetCalc;
 
     #endregion
+    
 
-
-    private float lastOffsetCalc;
     
     private void Awake()
     {
@@ -80,13 +78,12 @@ public class TurretRotation : MonoBehaviour
 
     void CalculatePositionOffset()
     {
-        if ((Time.time - lastOffsetCalc) > offsetDelay)
+        if ((Time.time - lastOffsetCalc) > turretSO.targetPredictionDelay)
         {
             lastOffsetCalc = Time.time;
             priorPos = target.transform.position;
+            targetPosOffset =  target.transform.position - priorPos;    
         }
-
-        targetPosOffset =  target.transform.position - priorPos;    
     }
     
         void Rotate()
