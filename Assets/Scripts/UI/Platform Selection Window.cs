@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PlatformSelectionWindow : MonoBehaviour
 {
-    [SerializeField] private GameObject turret;
-
     private Vector3 buildPosition;
     
     public void GetBuildLocation(Vector3  position)
@@ -12,9 +10,10 @@ public class PlatformSelectionWindow : MonoBehaviour
         buildPosition = position;
     }
 
-    public void PlacePlatform()
+    public void PlacePlatform(PlatformScriptableObject platform)
     {
-        Instantiate(turret, buildPosition, Quaternion.identity);
+        Instantiate(platform.platformPrefab, buildPosition, Quaternion.identity);
+        //Decrease resources
         
         CloseWindow();
     }

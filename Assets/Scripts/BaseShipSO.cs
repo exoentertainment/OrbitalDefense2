@@ -18,6 +18,8 @@ public class BaseShipSO : ScriptableObject
     public float turnSpeed;
     public int minOrbitRadius;
     public int maxOrbitRadius;
+    public int lookAheadDistance;
+    public LayerMask obstacleLayerMask;
 
     #endregion
 
