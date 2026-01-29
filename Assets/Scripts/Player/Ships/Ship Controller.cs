@@ -6,14 +6,24 @@ public class ShipController : MonoBehaviour
     #region Serialized Fields
 
     [SerializeField] private GameObject selectedShipVFX;
-    
-    [SerializeField] ShipMovement shipMovement;
-    [SerializeField] TurretController turretController;
 
     #endregion
 
+    #region Variables
+
+    ShipMovement shipMovement;
+    TurretController turretController;
+
+    #endregion
+    
     GameObject currentTarget;
     private bool isWaitingForTarget;
+
+    private void Awake()
+    {
+        shipMovement = GetComponent<ShipMovement>();
+        turretController = GetComponent<TurretController>();
+    }
 
     //When the ship is selected, turn on the selection VFX, the health bar, send ship data to the UI, play selection SFX
     public void ShipSelected()

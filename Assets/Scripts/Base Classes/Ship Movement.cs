@@ -1,6 +1,8 @@
 using System;
+using MoreMountains.Tools;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Sirenix.OdinInspector;
 
 public class ShipMovement : MonoBehaviour
 {
@@ -12,9 +14,27 @@ public class ShipMovement : MonoBehaviour
     [Tooltip("This is the step size for the raycast that looks for detour routes")] 
     [SerializeField] private int radarStepAmount;
 
+    [EnumToggleButtons]
+    [Title("Movement Behavior")]
+    [HideLabel]
+    [SerializeField] MovementBehavior movementBehavior;
+    
+    [BoxGroup("Orbit Variables")]
+    [HideIfGroup("Orbit Variables/movementBehavior", Value = MovementBehavior.MoveAround)]
+    [SerializeField] private int orbitDistance;
+    [SerializeField] private int orbitSpeed;
+    
+    [BoxGroup("Move Around Variables")]
+    [HideIfGroup("Move Around Variables/movementBehavior", Value = MovementBehavior.OrbitAround)]
+    [SerializeField] private int minOrbitRadius;
+    [SerializeField] private int maxOrbitRadius;
+    
     #endregion
 
+    #region Variables
+
     private int movementLayerOffset;
+    MMAutoRotate autoRotate;
     private GameObject targetObject;
     private Vector3 destinationPos;
     private Vector3 targetPos;
@@ -24,10 +44,27 @@ public class ShipMovement : MonoBehaviour
     private bool isMovingToTarget;
     private bool isMovingToDetour;
     bool isWaitingForTarget;
+    private bool isOrbitting;
+
+    private int orbitDirection = 1;
+    private float orbitStep = .1f;
 
     private int radarAngleX = -45;
     private int radarAngleY = -45;
+
+    enum MovementBehavior
+    {
+        MoveAround,
+        OrbitAround
+    }
     
+    #endregion
+
+    private void Awake()
+    {
+        autoRotate = GetComponent<MMAutoRotate>();
+    }
+
     private void Start()
     {
         movementLayerOffset = GameObject.FindGameObjectWithTag("Movement Layer").GetComponent<InteractionLayer>()
@@ -36,20 +73,65 @@ public class ShipMovement : MonoBehaviour
 
     private void Update()
     {
-        if (targetObject != null || isMovingToDestination || isMovingToTarget || isMovingToDetour)
+        if (targetObject == null && movementBehavior == MovementBehavior.OrbitAround && autoRotate.isActiveAndEnabled)
         {
+            autoRotate.OrbitCenterTransform = null;
+            autoRotate.enabled = false;
+        }
+        
+        if (targetObject != null && !isMovingToDetour)
+        {
+            switch (movementBehavior)
+            {
+                case MovementBehavior.MoveAround:
+                {
+                    RotateTowardsTarget();
+                    CheckDistanceToTarget();
+                    
+                    break;
+                }
+
+                case MovementBehavior.OrbitAround:
+                {
+                    if (!isOrbitting)
+                    {
+                        RotateTowardsTarget();
+                        MoveShip();
+                        CheckDistanceToOrbitPoint();
+                    }
+                    else
+                    {
+                        PointTowardsTarget();
+                        ChangeOrbitAxis();
+                    }
+
+
+
+                    break;
+                }
+            }
+
+            
+            MoveShip();
+        }
+        else if (isMovingToDestination)
+        {
+            RotateTowardsDestination();
             CheckDistanceToDestination();
             MoveShip();
-            RotateShip();
         }
-        else
+        else if (isMovingToDetour)
         {
-            if (!isWaitingForTarget)
-            {
-                isWaitingForTarget = true;
-                DeactivateEngines();
-            }
+            RotateTowardsDetour();
+            CheckDistanceToDetour();
+            MoveShip();
         }
+        
+        // if (!isWaitingForTarget)
+        // {
+        //     isWaitingForTarget = true;
+        //     DeactivateEngines();
+        // }
     }
 
     private void FixedUpdate()
@@ -63,32 +145,33 @@ public class ShipMovement : MonoBehaviour
         transform.position += transform.forward * (shipSO.moveSpeed * Time.deltaTime);
     }
 
-    void RotateShip()
+    #region Rotating Methods
+
+    void RotateTowardsDetour()
     {
-        if (isMovingToDetour)
-        {
-            Vector3 targetVector = detourPos - transform.position;
-            targetVector.Normalize();
-            Quaternion targetRotation = Quaternion.LookRotation(targetVector);
+        Vector3 targetVector = detourPos - transform.position;
+        targetVector.Normalize();
+        Quaternion targetRotation = Quaternion.LookRotation(targetVector);
 
 
-            transform.rotation =
-                Quaternion.SlerpUnclamped(transform.rotation, targetRotation, shipSO.turnSpeed * Time.deltaTime);
-            
-            return;
-        }
-        
-        if (isMovingToDestination)
-        {
-            Vector3 targetVector = destinationPos - transform.position;
-            targetVector.Normalize();
-            Quaternion targetRotation = Quaternion.LookRotation(targetVector);
+        transform.rotation =
+            Quaternion.SlerpUnclamped(transform.rotation, targetRotation, shipSO.turnSpeed * Time.deltaTime);
+    }
+
+    void RotateTowardsDestination()
+    {
+        Vector3 targetVector = destinationPos - transform.position;
+        targetVector.Normalize();
+        Quaternion targetRotation = Quaternion.LookRotation(targetVector);
 
 
-            transform.rotation =
-                Quaternion.SlerpUnclamped(transform.rotation, targetRotation, shipSO.turnSpeed * Time.deltaTime);
-        }
-        else if (isMovingToTarget)
+        transform.rotation =
+            Quaternion.SlerpUnclamped(transform.rotation, targetRotation, shipSO.turnSpeed * Time.deltaTime);
+    }
+
+    void RotateTowardsTarget()
+    {
+        if (movementBehavior == MovementBehavior.MoveAround)
         {
             Vector3 targetVector = targetPos - transform.position;
             targetVector.Normalize();
@@ -98,8 +181,20 @@ public class ShipMovement : MonoBehaviour
             transform.rotation =
                 Quaternion.SlerpUnclamped(transform.rotation, targetRotation, shipSO.turnSpeed * Time.deltaTime);
         }
+        else if (movementBehavior == MovementBehavior.OrbitAround)
+        {
+            Vector3 targetVector = targetObject.transform.position - transform.position;
+            targetVector.Normalize();
+            Quaternion targetRotation = Quaternion.LookRotation(targetVector);
 
+
+            transform.rotation =
+                Quaternion.SlerpUnclamped(transform.rotation, targetRotation, shipSO.turnSpeed * Time.deltaTime);
+        }
     }
+
+    #endregion
+
 
     //Set the destination position for a move order
     public void SetDestinationPos(Vector3 pos)
@@ -110,31 +205,65 @@ public class ShipMovement : MonoBehaviour
         ActivateEngines();
     }
 
-    void CheckDistanceToDestination()
-    {
-        if (isMovingToDetour)
-        {
-            if (Vector3.Distance(transform.position, detourPos) <= 1)
-            {
-                isMovingToDetour = false;
+    #region Distance Checking
 
-                return;
-            }
-        }
-        
-        if (isMovingToDestination)
-        {
-            if (Vector3.Distance(transform.position, destinationPos) <= 1)
-            {
-                isMovingToDestination = false;
-                DeactivateEngines();
-            }
-        }
-        else if (isMovingToTarget)
-            if (Vector3.Distance(transform.position, targetPos) <= 1)
-                SetNewTargetPos();
+    void CheckDistanceToTarget()
+    {
+        if (Vector3.Distance(transform.position, targetPos) <= 1)
+            SetNewTargetPos();
     }
 
+    void CheckDistanceToDetour()
+    {
+        if (Vector3.Distance(transform.position, detourPos) <= 1)
+        {
+            isMovingToDetour = false;
+            
+            if(targetObject == null)
+                isMovingToDestination = true;
+        }
+    }
+    
+    void CheckDistanceToDestination()
+    {
+        if (Vector3.Distance(transform.position, destinationPos) <= 1)
+        {
+            isMovingToDestination = false;
+            DeactivateEngines();
+        }
+    }
+
+    void CheckDistanceToOrbitPoint()
+    {
+        if (Vector3.Distance(transform.position, targetObject.transform.position) <= orbitDistance)
+        {
+            autoRotate.enabled = true;
+            autoRotate.OrbitCenterTransform = targetObject.transform;
+            autoRotate.OrbitRadius = orbitDistance;
+            
+            
+            isOrbitting = true;
+        }
+    }
+    
+    #endregion
+
+    //Slowly adjust the orbit axis over time and switch the Z axis once it reaches (-)3
+    void ChangeOrbitAxis()
+    {
+        autoRotate.OrbitRotationAxis.x += orbitStep * Time.deltaTime;
+        autoRotate.OrbitRotationAxis.z += (orbitStep * Time.deltaTime) * orbitDirection;
+
+        if (autoRotate.OrbitRotationAxis.z > 3 || autoRotate.OrbitRotationAxis.z < -3)
+            orbitDirection *= -1;
+    }
+    
+    //Keep the nose of the ship pointed towards the target
+    void PointTowardsTarget()
+    {
+        transform.LookAt(targetObject.transform);
+    }
+    
     //Receive target from ship controller, set new position around target
     public void SetTarget(GameObject target)
     {
@@ -146,7 +275,7 @@ public class ShipMovement : MonoBehaviour
 
             targetObject = target;
 
-            Vector3 randomSpot = (Random.insideUnitSphere * Random.Range(shipSO.minOrbitRadius, shipSO.maxOrbitRadius));
+            Vector3 randomSpot = (Random.insideUnitSphere * Random.Range(minOrbitRadius, maxOrbitRadius));
             targetPos = randomSpot + target.transform.position;
             
             ActivateEngines();
@@ -156,7 +285,7 @@ public class ShipMovement : MonoBehaviour
     //Assign a new random spot around the target
     void SetNewTargetPos()
     {
-        Vector3 randomSpot = (Random.insideUnitSphere * Random.Range(shipSO.minOrbitRadius, shipSO.maxOrbitRadius));
+        Vector3 randomSpot = (Random.insideUnitSphere * Random.Range(minOrbitRadius, maxOrbitRadius));
         targetPos = randomSpot + targetObject.transform.position;
     }
 
@@ -183,9 +312,10 @@ public class ShipMovement : MonoBehaviour
             {
                 detourPos = transform.position + Quaternion.Euler(radarAngleX, radarAngleY, 0) * (transform.forward *
                     shipSO.lookAheadDistance);
+                isMovingToDestination = false;
+                isMovingToTarget = false;
                 isMovingToDetour = true;
 
-                detourFound = true;
                 break;
             }
             
@@ -215,5 +345,25 @@ public class ShipMovement : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Debug.DrawRay(transform.position, transform.forward * shipSO.lookAheadDistance, Color.blue);
+
+        switch (movementBehavior)
+        {
+            case MovementBehavior.MoveAround:
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(transform.position, minOrbitRadius);
+                Gizmos.DrawWireSphere(transform.position, maxOrbitRadius);
+                
+                break;
+            }
+            
+            case MovementBehavior.OrbitAround:
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(transform.position, orbitDistance);
+                
+                break;
+            }
+        }
     }
 }

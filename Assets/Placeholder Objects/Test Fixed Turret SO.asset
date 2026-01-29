@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a4b23c1ac0331c48abb9927f157f4de, type: 3}
+  m_Name: Test Fixed Turret SO
+  m_EditorClassIdentifier: Assembly-CSharp::TurretSO
+  projectileSO: {fileID: 11400000, guid: 3a61d7ebc04264845a5b2e6d2ca46ac8, type: 2}
+  fireSFX: {fileID: 11400000, guid: c1e92e123ee01da4ab83e2bbcb50a369, type: 2}
+  engageRange: 100
+  minEngageRange: 0
+  fireRate: 0.5
+  barrelFireDelay: 0.25
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  targetPredictionDelay: 1
+  TrackingType: 0
+  HeadingTrackingSpeed: 50
+  ElevationTrackingSpeed: 50
+  HeadingLimit: {x: 0, y: 0}
+  ElevationLimit: {x: 0, y: 0}

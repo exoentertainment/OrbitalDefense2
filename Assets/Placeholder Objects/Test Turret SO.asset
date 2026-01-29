@@ -15,7 +15,8 @@ MonoBehaviour:
   projectileSO: {fileID: 11400000, guid: 3a61d7ebc04264845a5b2e6d2ca46ac8, type: 2}
   fireSFX: {fileID: 11400000, guid: c1e92e123ee01da4ab83e2bbcb50a369, type: 2}
   engageRange: 100
-  fireRate: 1.5
+  minEngageRange: 0
+  fireRate: 0.5
   barrelFireDelay: 0.25
   targetLayers:
     serializedVersion: 2

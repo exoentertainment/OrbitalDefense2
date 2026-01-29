@@ -47,8 +47,17 @@ public class ProjectileHit : MonoBehaviour
     
     private void OnCollisionEnter(Collision other)
     {
+        float HitRadius = 0.1f; 
+        float Dirt = 1f; 
+        float Burn = 1f; 
+        float Heat = 1f; 
+        float Clip = 0.7f;
+    
         other.gameObject.TryGetComponent<IHealth>(out IHealth health);
         health?.TakeDamage(1f);
+        
+        other.gameObject.TryGetComponent<DamageFX>(out DamageFX damageFX);
+        damageFX?.Hit(damageFX.transform.InverseTransformPoint(other.GetContact(0).point), HitRadius, Dirt, Burn, Heat, Clip);
         
         Vector3 collisionNormal = other.contacts[0].normal;
         Quaternion collisionRotation = Quaternion.LookRotation(collisionNormal);
